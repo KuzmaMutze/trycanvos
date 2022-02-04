@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+</style>
+
+<body>
+    <canvas id="stars" height="600px" width="600px" style="border: 1px solid Black;">
+
+    </canvas>
+    <canvas id="smallCanvas" height="600px" width="50px" style="border: 1px solid Black;"></canvas>
+
+    <script>
+        let color
+        let canvas = document.getElementById("stars");
+        let smallCanvas = document.getElementById("smallCanvas");
+        let ctx = canvas.getContext("2d");
+        let ctxSmall = smallCanvas.getContext("2d");
+
+        function drawStar(cx, cy, color) {
+            color = color
+            let rot = Math.PI / 2 * 3;
+            let x = cx;
+            let y = cy;
+            let step = Math.PI / 5;
+
+            ctx.beginPath();
+            ctx.moveTo(cx, cy - 40)
+            for (i = 0; i < 5; i++) {
+                x = cx + Math.cos(rot) * 40;
+                y = cy + Math.sin(rot) * 40;
+                ctx.lineTo(x, y)
+                rot += step
+
+
+                x = cx + Math.cos(rot) * 15;
+                y = cy + Math.sin(rot) * 15;
+                ctx.lineTo(x, y)
+                rot += step
+            }
+            ctx.isPointInPath(x, y)
+
+            ctx.lineTo(cx, cy - 40);
+            ctx.closePath();
+            ctx.lineWidth = 22;
+            ctx.fillStyle = color;
+            ctx.fill();
+        }
+
+        canvas.addEventListener("click", function (e) {
+            if (ctx.isPointInStroke(e.clientX, e.clientY)) {
+                ctxSmall.fillStyle = color;
+                ctxSmall.fillRect(0, 0, canvas.width, canvas.height);
+                console.log(true);
+            }
+        })
+
+        drawStar(100, 100, "red");
+        drawStar(100, 200, "blue");
+        drawStar(100, 300, "green");
+        drawStar(100, 400, "yellow");
+        drawStar(100, 500, "black"); // не понятно почему контекст остается только на последнем el
+    </script>
+</body>
+
+</html>
